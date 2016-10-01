@@ -66,7 +66,7 @@ public class Hamming {
         int incorrectPosition = 0;
         for (int i = 0; i < comparison.length; i++) {
             if (!comparison[i]) {
-                incorrectPosition += i + 1;
+                incorrectPosition += Math.pow(2, i);
             }
         }
         incorrectPosition--;
