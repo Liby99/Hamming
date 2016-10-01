@@ -54,48 +54,48 @@ public class Hamming {
         
         //Check if there's an error in the data field, and save that position in the
         int incorrectPosition = -1;
-        if (!comparison[0] && comparison[1] && !comparison[2]) { //p1, p3 wrong. p2 correct
+        if (!comparison[0] && comparison[1] && comparison[2]) {
             incorrectPosition = 0;
         }
-        if (!comparison[0] && !comparison[1] && comparison[2]) { //p1, p2 wrong. p3 correct
+        if (comparison[0] && !comparison[1] && comparison[2]) {
             incorrectPosition = 1;
         }
-        if (comparison[0] && !comparison[1] && !comparison[2]) { //p2, p3 wrong. p1 correct
+        if (!comparison[0] && !comparison[1] && comparison[2]) { //p1, p2 wrong. p3 correct
             incorrectPosition = 2;
         }
-        if (!comparison[0] && !comparison[1] && !comparison[2]) { //all three are wrong
+        if (comparison[0] && comparison[1] && !comparison[2]) {
             incorrectPosition = 3;
         }
+        if (!comparison[0] && comparison[1] && !comparison[2]) { //p1, p3 wrong. p2 correct
+            incorrectPosition = 4;
+        }
+        if (comparison[0] && !comparison[1] && !comparison[2]) { //p2, p3 wrong. p1 correct
+            incorrectPosition = 5;
+        }
+        if (!comparison[0] && !comparison[1] && !comparison[2]) { //all three are wrong
+            incorrectPosition = 6;
+        }
         
-        //Check if there's actually an error
         if (incorrectPosition != -1) {
             
-            //If there's an error, then flip the bit in that position
-            data[incorrectPosition] = data[incorrectPosition] == 0 ? 1 : 0;
+            encoded[incorrectPosition] = encoded[incorrectPosition] == 0 ? 1 : 0;
             
-            //Generate the new encoded 8 digit array, and check the amount of '1's in it
-            int[] newEncoded = {parity[0], parity[1], data[0], parity[2], data[1], data[2], data[3], encoded[7]};
             int sum = 0;
-            for (int i = 0; i < newEncoded.length; i++) {
-                sum += newEncoded[i];
+            for (int i = 0; i < encoded.length; i++) {
+                sum += encoded[i];
             }
             
-            //Check if the amount of '1's is even
             if (sum % 2 == 0) {
-                
-                //If is even, then directly return the data
-                return data;
+                int[] decodedData = {encoded[2], encoded[4], encoded[5], encoded[6]};
+                return decodedData;
             }
             else {
-                
-                //If the amount is odd, then throw the error
-                System.out.println("Error Occurs When Decoding " + toString(encoded) + ", May Contain 2 Errors.");
+                System.out.println("Error Occurs, May Contain 2 Errors.");
                 return null;
             }
         }
         else {
             
-            //If is even, then directly return the data
             return data;
         }
     }
@@ -155,9 +155,6 @@ public class Hamming {
         if (data != null) {
             System.out.println(toString(data));
         }
-        else {
-            System.out.println("Unable to print data");
-        }
     }
     
     /**
@@ -169,7 +166,18 @@ public class Hamming {
         printData(encode(toArray("1011")));
         printData(decode(toArray("01100110"))); //Correct One
         printData(decode(toArray("11100110"))); //Has One Error
+        printData(decode(toArray("00100110"))); //Has One Error
+        printData(decode(toArray("01000110"))); //Has One Error
+        printData(decode(toArray("01110110"))); //Has One Error
+        printData(decode(toArray("01101110"))); //Has One Error
+        printData(decode(toArray("01100010"))); //Has One Error
+        printData(decode(toArray("01100100"))); //Has One Error
+        printData(decode(toArray("01100111"))); //Has One Error
+        printData(decode(toArray("00000110"))); //Has Two Errors
         printData(decode(toArray("10100110"))); //Has Two Errors
+        printData(decode(toArray("01100000"))); //Has Two Errors
+        printData(decode(toArray("01100011"))); //Has Two Errors
+        printData(decode(toArray("01000111"))); //Has Two Errors
 
         System.out.println("\nTESTING 0101 --- Encoded: 01001011");
         printData(encode(toArray("0101")));
