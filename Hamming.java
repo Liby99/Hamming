@@ -55,8 +55,14 @@ public class Hamming {
             comparison[i] = parity[i] == correctParity[i];
         }
         
-        //Check if there's an error in the encoded array
-        //And save that position in the incorrectPosition
+        //Check if there's an error in the encoded array based on the comparison.
+        //This can be referenced from wikipedia: (which digit is wrong based on p1, p2, p4)
+        //     0 1 2 3 4 5 6 7
+        // p1  x   x   x   x
+        // p2    x x     x x
+        // p4        x x x x
+        // p8                x
+        //And save that incorrect position in the incorrectPosition
         int incorrectPosition = -1;
         if (!comparison[0] && comparison[1] && comparison[2]) { //p1 wrong
             incorrectPosition = 0;
