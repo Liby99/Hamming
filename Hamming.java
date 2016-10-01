@@ -63,28 +63,13 @@ public class Hamming {
         // p4        x x x x
         // p8                x
         //And save that incorrect position in the incorrectPosition
-        int incorrectPosition = -1;
-        if (!comparison[0] && comparison[1] && comparison[2]) { //p1 wrong
-            incorrectPosition = 0;
+        int incorrectPosition = 0;
+        for (int i = 0; i < comparison.length; i++) {
+            if (!comparison[i]) {
+                incorrectPosition += i + 1;
+            }
         }
-        if (comparison[0] && !comparison[1] && comparison[2]) { //p2 wrong
-            incorrectPosition = 1;
-        }
-        if (!comparison[0] && !comparison[1] && comparison[2]) { //p1, p2 wrong
-            incorrectPosition = 2;
-        }
-        if (comparison[0] && comparison[1] && !comparison[2]) { //p3 wrong
-            incorrectPosition = 3;
-        }
-        if (!comparison[0] && comparison[1] && !comparison[2]) { //p1, p3 wrong
-            incorrectPosition = 4;
-        }
-        if (comparison[0] && !comparison[1] && !comparison[2]) { //p2, p3 wrong
-            incorrectPosition = 5;
-        }
-        if (!comparison[0] && !comparison[1] && !comparison[2]) { //all three are wrong
-            incorrectPosition = 6;
-        }
+        incorrectPosition--;
         
         //Check if there's an incorrect digit
         if (incorrectPosition != -1) {
